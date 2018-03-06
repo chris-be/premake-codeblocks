@@ -5,14 +5,14 @@ Generate workspace and projects for [Code::Blocks](http://www.codeblocks.org/).
 - Support for C/C++ language projects
 
 # Usage (little reminder)
-Put those files in a "codeblocks" subdirectory of [Premake search paths](https://github.com/premake/premake-core/wiki/Locating-Scripts).
+1. Put these files in a "codeblocks" subdirectory of [Premake search paths](https://github.com/premake/premake-core/wiki/Locating-Scripts).
 
-### Adapt your premake5.lua script
+2. Adapt your premake5.lua script, or better: create/adapt your [premake-system.lua](https://github.com/premake/premake-core/wiki/System-Scripts)
 ```lua
-require 'codeblocks'
+require "codeblocks"
 ```
 
-### Launch
+3. Generate
 ```sh
 premake5 codeblocks
 ```

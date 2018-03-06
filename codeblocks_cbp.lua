@@ -1,10 +1,10 @@
 --
--- Name:	codeblocks/codeblocks_cbp.lua
--- Purpose:	Generate a Code::Blocks C/C++ project.
--- Author:	Ryan Pusztai
+-- Name:		codeblocks/codeblocks_cbp.lua
+-- Purpose:		Generate a Code::Blocks C/C++ project.
+-- Author:		Ryan Pusztai
 -- Modified by:	
--- Created:	
--- Copyright:	(c) 2009, 2011 Jason Perkins and the Premake project
+-- Created:		
+-- Copyright:	(c) 2009-2018 Jason Perkins and the Premake project
 --
 
 	local p = premake

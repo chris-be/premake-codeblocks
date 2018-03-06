@@ -1,11 +1,11 @@
 --
--- Name:	codelite/codelite_workspace.lua
--- Purpose:	Generate a CodeLite workspace.
--- Author:	Ryan Pusztai
+-- Name:		codeblocks/codeblocks_workspace.lua
+-- Purpose:		Generate a Code::Blocks workspace.
+-- Author:		Ryan Pusztai
 -- Modified by:	Andrea Zanellato
---		Manu Evans
--- Created:	2013/05/06
--- Copyright:	(c) 2008-2015 Jason Perkins and the Premake project
+--				Manu Evans
+-- Created:		2013/05/06
+-- Copyright:	(c) 2008-2018 Jason Perkins and the Premake project
 --
 
 	local p = premake

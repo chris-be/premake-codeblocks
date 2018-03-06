@@ -1,10 +1,10 @@
 --
--- Name:	codeblocks_action.lua
--- Purpose:	Define Code::Blocks action.
--- Author:	
--- Modified by:	
--- Created:	
--- Copyright:	(c) 2002-2011 Jason Perkins and the Premake project
+-- Name:		codeblocks/_preload.lua
+-- Purpose:		Define Code::Blocks action.
+-- Author:		
+-- Modified by:	Christophe Marc BERTONCINI
+-- Created:		
+-- Copyright:	(c) 2002-2018 Jason Perkins and the Premake project
 --
 
 	local p = premake
@@ -19,7 +19,7 @@
 		valid_languages = { "C", "C++" },
 		valid_tools     =
 		{
-			cc	= { "clang", "gcc", "ow" },
+			cc	= { "clang", "gcc", "msc" },
 		},
 
 		onSolution = function(wks)
@@ -31,13 +31,19 @@
 		end,
 
 		onCleanSolution = function(wks)
-			p.clean.file(wks, wks.name .. ".workspace")
-			p.clean.file(wks, wks.name .. ".workspace.layout")
+			p.modules.codeblocks.cleanWorkspace(wks)
 		end,
 
 		onCleanProject = function(prj)
-			p.clean.file(prj, prj.name .. ".workspace")
-			p.clean.file(prj, prj.name .. ".depend")
-			p.clean.file(prj, prj.name .. ".layout")
+			p.modules.codeblocks.cleanProject(prj)
+		end,
+
+		onCleanTarget = function(tgt)
+			p.modules.codeblocks.cleanTarget(tgt)
 		end
 	}
+
+	-- Decide when the full module should be loaded.
+	return function(cfg)
+		return (_ACTION == "codeblocks")
+	end
