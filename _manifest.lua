@@ -12,5 +12,5 @@ return
 	  "_preload.lua"
 	, "codeblocks.lua"
 	, "codeblocks_workspace.lua"
-	, "codeblocks_bcp.lua"
+	, "codeblocks_cbp.lua"
 }
