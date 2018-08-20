@@ -219,6 +219,9 @@
 					_p(3,'<Option weight="0" />')
 					_p(3,'<Add option="-x c++-header" />')
 				end
+				for k,fsub in pairs(node.configs) do
+					_p(3, '<Option target="%s" />', fsub.config.longname)
+				end
 				_p(2,'</Unit>')
 
 			end,
