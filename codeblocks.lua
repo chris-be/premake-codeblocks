@@ -45,7 +45,7 @@
 		p.eol("\r\n")
 		p.indent("\t")
 		p.escaper(codeblocks.esc)
-		if project.iscpp(prj) then
+		if project.isc(prj) or project.iscpp(prj) then
 			p.generate(prj, ".cbp", codeblocks.project.generate)
 		end
 	end
