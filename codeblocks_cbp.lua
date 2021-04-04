@@ -205,7 +205,7 @@
 				if node.relpath == node.vpath then
 					_p(2,'<Unit filename="%s">', node.relpath)
 				else
-					_p(2,'<Unit filename="%s">', node.name)
+					_p(2,'<Unit filename="%s">', node.relpath)
 					_p(3,'<Option virtualFolder="%s" />', path.getdirectory(node.vpath))
 				end
 				if path.isresourcefile(node.name) then
