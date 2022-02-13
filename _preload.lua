@@ -14,6 +14,7 @@
 		trigger         = "codeblocks",
 		shortname       = "Code::Blocks",
 		description     = "Generate Code::Blocks project files",
+		toolset         = "gcc",
 
 		valid_kinds     = { "ConsoleApp", "WindowedApp", "StaticLib", "SharedLib" },
 		valid_languages = { "C", "C++" },

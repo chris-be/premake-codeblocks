@@ -135,6 +135,12 @@
 					_p(5,'<Add option="-Winvalid-pch" />')
 					_p(5,'<Add option="-include &quot;%s&quot;" />', p.esc(cfg.pchheader))
 				end
+				for _, forceincludedir in ipairs(compiler.getforceincludes(cfg)) do
+					_p(5,'<Add option="%s" />', forceincludedir)
+				end
+				for _, sysincludedir in ipairs(compiler.getincludedirs(cfg, {}, cfg.sysincludedirs)) do
+					_p(5,'<Add option="%s" />', sysincludedir)
+				end
 				for _,v in ipairs(cfg.includedirs) do
 					_p(5,'<Add directory="%s" />', p.esc(path.getrelative(prj.location, v)))
 				end
@@ -171,11 +177,17 @@
 				-- begin build steps --
 				if #cfg.prebuildcommands > 0 or #cfg.postbuildcommands > 0 then
 					_p(4,'<ExtraCommands>')
+					if cfg.prebuildmessage then
+						_p(5,'<Add before="%s" />', p.esc(os.translateCommandsAndPaths("{ECHO} ".. cfg.prebuildmessage, cfg.project.basedir, cfg.project.location)))
+					end
 					for _,v in ipairs(cfg.prebuildcommands) do
-						_p(5,'<Add before="%s" />', p.esc(v))
+						_p(5,'<Add before="%s" />', p.esc(os.translateCommandsAndPaths(v, cfg.project.basedir, cfg.project.location)))
+					end
+					if cfg.postbuildmessage then
+						_p(5,'<Add after="%s" />', p.esc(os.translateCommandsAndPaths("{ECHO} ".. cfg.postbuildmessage,  cfg.project.basedir, cfg.project.location)))
 					end
 					for _,v in ipairs(cfg.postbuildcommands) do
-						_p(5,'<Add after="%s" />', p.esc(v))
+						_p(5,'<Add after="%s" />', p.esc(os.translateCommandsAndPaths(v, cfg.project.basedir, cfg.project.location)))
 					end
 
 					_p(4,'</ExtraCommands>')
@@ -202,6 +214,9 @@
 		tree.traverse(tr, {
 			-- source files are handled at the leaves
 			onleaf = function(node, depth)
+				if node.generated then
+					return
+				end
 				if node.relpath == node.vpath then
 					_p(2,'<Unit filename="%s">', node.relpath)
 				else
@@ -218,6 +233,24 @@
 					_p(3,'<Option compile="1" />')
 					_p(3,'<Option weight="0" />')
 					_p(3,'<Add option="-x c++-header" />')
+				end
+				for cfg in project.eachconfig(prj) do
+					local filecfg = p.fileconfig.getconfig(node, cfg)
+					if #filecfg.buildcommands ~= 0 or filecfg.buildmessage then
+						local buildmessage = ""
+						if filecfg.buildmessage then
+							buildmessage = "{ECHO} " .. filecfg.buildmessage .. "\n"
+						end
+						local commands = table.implode(filecfg.buildCommands,"","\n","")
+						_p(3, '<Option compile="1" />')
+						compile = ""
+						if #filecfg.buildOutputs ~= 0 and filecfg.compilebuildoutputs then
+							compile = "$compiler $options $includes -c " .. filecfg.buildOutputs[1] .. " -o $object"
+							_p(3, '<Option link="1" />')
+						end
+						_p(3, '<Option compiler="%s" use="1" buildCommand="%s" />', m.getcompilername(cfg), os.translateCommandsAndPaths(buildmessage .. commands .. compile, cfg.project.basedir, cfg.project.location):gsub('\n', '\\n'))
+						break
+					end
 				end
 				for k,fsub in pairs(node.configs) do
 					_p(3, '<Option target="%s" />', fsub.config.longname)
