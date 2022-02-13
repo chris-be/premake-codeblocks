@@ -177,11 +177,17 @@
 				-- begin build steps --
 				if #cfg.prebuildcommands > 0 or #cfg.postbuildcommands > 0 then
 					_p(4,'<ExtraCommands>')
+					if cfg.prebuildmessage then
+						_p(5,'<Add before="%s" />', p.esc(os.translateCommandsAndPaths("{ECHO} ".. cfg.prebuildmessage, cfg.project.basedir, cfg.project.location)))
+					end
 					for _,v in ipairs(cfg.prebuildcommands) do
-						_p(5,'<Add before="%s" />', p.esc(v))
+						_p(5,'<Add before="%s" />', p.esc(os.translateCommandsAndPaths(v, cfg.project.basedir, cfg.project.location)))
+					end
+					if cfg.postbuildmessage then
+						_p(5,'<Add after="%s" />', p.esc(os.translateCommandsAndPaths("{ECHO} ".. cfg.postbuildmessage,  cfg.project.basedir, cfg.project.location)))
 					end
 					for _,v in ipairs(cfg.postbuildcommands) do
-						_p(5,'<Add after="%s" />', p.esc(v))
+						_p(5,'<Add after="%s" />', p.esc(os.translateCommandsAndPaths(v, cfg.project.basedir, cfg.project.location)))
 					end
 
 					_p(4,'</ExtraCommands>')
