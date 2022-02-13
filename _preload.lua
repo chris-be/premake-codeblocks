@@ -22,7 +22,7 @@
 			cc	= { "clang", "gcc", "msc" },
 		},
 
-		onSolution = function(wks)
+		onWorkspace = function(wks)
 			p.modules.codeblocks.generateWorkspace(wks)
 		end,
 
@@ -30,7 +30,7 @@
 			p.modules.codeblocks.generateProject(prj)
 		end,
 
-		onCleanSolution = function(wks)
+		onCleanWorkspace = function(wks)
 			p.modules.codeblocks.cleanWorkspace(wks)
 		end,
 
