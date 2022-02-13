@@ -135,6 +135,12 @@
 					_p(5,'<Add option="-Winvalid-pch" />')
 					_p(5,'<Add option="-include &quot;%s&quot;" />', p.esc(cfg.pchheader))
 				end
+				for _, forceincludedir in ipairs(compiler.getforceincludes(cfg)) do
+					_p(5,'<Add option="%s" />', forceincludedir)
+				end
+				for _, sysincludedir in ipairs(compiler.getincludedirs(cfg, {}, cfg.sysincludedirs)) do
+					_p(5,'<Add option="%s" />', sysincludedir)
+				end
 				for _,v in ipairs(cfg.includedirs) do
 					_p(5,'<Add directory="%s" />', p.esc(path.getrelative(prj.location, v)))
 				end
