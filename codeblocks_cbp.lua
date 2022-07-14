@@ -250,7 +250,7 @@
 						_p(3, '<Option link="1" />')
 					end
 					_p(3, '<Option weight="40" />') -- below default 50 to ensure genrated files are built befoe regulr ones
-					_p(3, '<Option compiler="%s" use="1" buildCommand="%s" />', m.getcompilername(cfg), os.translateCommandsAndPaths(buildmessage .. commands .. compile, cfg.project.basedir, cfg.project.location):gsub('\n', '\\n'))
+					_p(3, '<Option compiler="%s" use="1" buildCommand="%s" />', m.getcompilername(cfg), p.esc(os.translateCommandsAndPaths(buildmessage .. commands .. compile, cfg.project.basedir, cfg.project.location):gsub('\n', '\\n')))
 					return true
 				end
 				for cfg in project.eachconfig(prj) do
