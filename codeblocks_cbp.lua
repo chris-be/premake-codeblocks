@@ -242,11 +242,11 @@
 					if filecfg.buildmessage then
 						buildmessage = "{ECHO} " .. filecfg.buildmessage .. "\n"
 					end
-					local commands = table.implode(filecfg.buildCommands,"","\n","")
+					local commands = table.implode(filecfg.buildcommands,"","\n","")
 					_p(3, '<Option compile="1" />')
 					local compile = ""
-					if #filecfg.buildOutputs ~= 0 and filecfg.compilebuildoutputs then
-						compile = "$compiler $options $includes -c " .. project.getrelative(cfg.project, filecfg.buildOutputs[1]) .. " -o $object"
+					if #filecfg.buildoutputs ~= 0 and filecfg.compilebuildoutputs then
+						compile = "$compiler $options $includes -c " .. project.getrelative(cfg.project, filecfg.buildoutputs[1]) .. " -o $object"
 						_p(3, '<Option link="1" />')
 					end
 					_p(3, '<Option weight="40" />') -- below default 50 to ensure genrated files are built befoe regulr ones
