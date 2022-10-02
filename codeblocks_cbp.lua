@@ -138,8 +138,8 @@
 				for _, forceincludedir in ipairs(compiler.getforceincludes(cfg)) do
 					_p(5,'<Add option="%s" />', forceincludedir)
 				end
-				for _, sysincludedir in ipairs(compiler.getincludedirs(cfg, {}, cfg.sysincludedirs)) do
-					_p(5,'<Add option="%s" />', sysincludedir)
+				for _, externalincludedirs in ipairs(compiler.getincludedirs(cfg, {}, cfg.externalincludedirs)) do
+					_p(5,'<Add option="%s" />', externalincludedirs)
 				end
 				for _,v in ipairs(cfg.includedirs) do
 					_p(5,'<Add directory="%s" />', p.esc(path.getrelative(prj.location, v)))
