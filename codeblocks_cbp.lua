@@ -234,22 +234,42 @@
 					_p(3,'<Option weight="0" />')
 					_p(3,'<Add option="-x c++-header" />')
 				end
+				local function addrule(cfg, filecfg)
+					if #filecfg.buildcommands == 0 and not filecfg.buildmessage then
+						return false
+					end
+					local buildmessage = ""
+					if filecfg.buildmessage then
+						buildmessage = "{ECHO} " .. filecfg.buildmessage .. "\n"
+					end
+					local commands = table.implode(filecfg.buildcommands,"","\n","")
+					_p(3, '<Option compile="1" />')
+					local compile = ""
+					if #filecfg.buildoutputs ~= 0 and filecfg.compilebuildoutputs then
+						compile = "$compiler $options $includes -c " .. project.getrelative(cfg.project, filecfg.buildoutputs[1]) .. " -o $object"
+						_p(3, '<Option link="1" />')
+					end
+					_p(3, '<Option weight="40" />') -- below default 50 to ensure genrated files are built befoe regulr ones
+					_p(3, '<Option compiler="%s" use="1" buildCommand="%s" />', m.getcompilername(cfg), p.esc(os.translateCommandsAndPaths(buildmessage .. commands .. compile, cfg.project.basedir, cfg.project.location):gsub('\n', '\\n')))
+					return true
+				end
 				for cfg in project.eachconfig(prj) do
 					local filecfg = p.fileconfig.getconfig(node, cfg)
-					if #filecfg.buildcommands ~= 0 or filecfg.buildmessage then
-						local buildmessage = ""
-						if filecfg.buildmessage then
-							buildmessage = "{ECHO} " .. filecfg.buildmessage .. "\n"
+					local rule = p.global.getRuleForFile(node.name, prj.rules)
+
+					if addrule(cfg, filecfg) then
+						break;
+					elseif rule then
+						local environ = table.shallowcopy(filecfg.environ)
+
+						if rule.propertydefinition then
+							p.rule.prepareEnvironment(rule, environ, cfg)
+							p.rule.prepareEnvironment(rule, environ, filecfg)
 						end
-						local commands = table.implode(filecfg.buildCommands,"","\n","")
-						_p(3, '<Option compile="1" />')
-						compile = ""
-						if #filecfg.buildOutputs ~= 0 and filecfg.compilebuildoutputs then
-							compile = "$compiler $options $includes -c " .. filecfg.buildOutputs[1] .. " -o $object"
-							_p(3, '<Option link="1" />')
+						local rulecfg = p.context.extent(rule, environ)
+						if addrule(cfg, rulecfg) then
+							break
 						end
-						_p(3, '<Option compiler="%s" use="1" buildCommand="%s" />', m.getcompilername(cfg), os.translateCommandsAndPaths(buildmessage .. commands .. compile, cfg.project.basedir, cfg.project.location):gsub('\n', '\\n'))
-						break
 					end
 				end
 				for k,fsub in pairs(node.configs) do
