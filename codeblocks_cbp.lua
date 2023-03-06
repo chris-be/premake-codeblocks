@@ -225,6 +225,20 @@
 				end
 				if path.isresourcefile(node.name) then
 					_p(3,'<Option compilerVar="WINDRES" />')
+				elseif node.compileas and node.compileas ~= "Default" then
+					local k, first_cfg = ipairs(prj.configs) -- take first one as default
+					local default_compiler = m.getcompilername(first_cfg)
+					if p.languages.iscpp(node.compileas) then
+						_p(3,'<Option compilerVar="CPP" />')
+						_p(3,'<Option compile="1" />')
+						_p(3,'<Option link="1" />')
+						_p(3,'<Option compiler="%s" use="1" buildCommand="$compiler $options $includes -c -x c++ $file -o $object" />', default_compiler)
+					elseif p.languages.isc(node.compileas) then
+						_p(3,'<Option compilerVar="CC" />')
+						_p(3,'<Option compile="1" />')
+						_p(3,'<Option link="1" />')
+						_p(3,'<Option compiler="%s" use="1" buildCommand="$compiler $options $includes -c -x c $file -o $object" />', default_compiler)
+					end
 				elseif path.iscfile(node.name) and prj.language == "C++" then
 					_p(3,'<Option compilerVar="CC" />')
 				end
