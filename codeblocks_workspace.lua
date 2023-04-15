@@ -29,15 +29,18 @@
 		_p(1,'<Workspace title="%s">', wks.name)
 
 		for prj in workspace.eachproject(wks) do
-			local fname = path.join(path.getrelative(wks.location, prj.location), prj.name)
-			local active = iif(prj.project == wks.projects[1], ' active="1"', '')
+			--Kind "Utility" is not supported
+			if prj.kind ~= "Utility" then
+				local fname = path.join(path.getrelative(wks.location, prj.location), prj.name)
+				local active = iif(prj.project == wks.projects[1], ' active="1"', '')
 
-			_p(2,'<Project filename="%s.cbp"%s>', fname, active)
-			for _,dep in ipairs(project.getdependencies(prj)) do
-				_p(3,'<Depends filename="%s.cbp" />', path.join(path.getrelative(wks.location, dep.location), dep.name))
+				_p(2,'<Project filename="%s.cbp"%s>', fname, active)
+				for _,dep in ipairs(project.getdependencies(prj)) do
+					_p(3,'<Depends filename="%s.cbp" />', path.join(path.getrelative(wks.location, dep.location), dep.name))
+				end
+
+				_p(2,'</Project>')
 			end
-
-			_p(2,'</Project>')
 		end
 
 		_p(1,'</Workspace>')

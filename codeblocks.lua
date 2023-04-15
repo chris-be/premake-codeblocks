@@ -42,6 +42,10 @@
 	end
 
 	function codeblocks.generateProject(prj)
+		--Kind "Utility" is not supported
+		if prj.kind == "Utility" then
+			return
+		end
 		p.eol("\r\n")
 		p.indent("\t")
 		p.escaper(codeblocks.esc)
