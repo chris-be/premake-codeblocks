@@ -149,7 +149,7 @@
 				for _, forceincludedir in ipairs(compiler.getforceincludes(cfg)) do
 					_p(5,'<Add option="%s" />', forceincludedir)
 				end
-				for _, externalincludedirs in ipairs(compiler.getincludedirs(cfg, {}, cfg.externalincludedirs)) do
+				for _, externalincludedirs in ipairs(compiler.getincludedirs(cfg, {}, cfg.externalincludedirs, cfg.frameworkdirs, cfg.includedirsafter)) do
 					_p(5,'<Add option="%s" />', externalincludedirs)
 				end
 				for _,v in ipairs(cfg.includedirs) do
@@ -242,7 +242,7 @@
 		local cppflags = tostring(toolset.getcppflags(filecfg))
 		local cflags = tostring(toolset.getcflags(filecfg))
 		local defines = tostring(table.join(toolset.getdefines(filecfg.defines), toolset.getundefines(filecfg.undefines)))
-		local includes = tostring(toolset.getincludedirs(cfg, filecfg.includedirs, filecfg.externalincludedirs))
+		local includes = tostring(toolset.getincludedirs(cfg, filecfg.includedirs, filecfg.externalincludedirs, filecfg.frameworkdirs, filecfg.includedirsafter))
 		local forceincludes = tostring(toolset.getforceincludes(cfg))
 
 		return buildopt .. cppflags .. cflags .. defines .. includes .. forceincludes
@@ -253,7 +253,7 @@
 		local cppflags = tostring(toolset.getcppflags(filecfg))
 		local cxxflags = tostring(toolset.getcxxflags(filecfg))
 		local defines = tostring(table.join(toolset.getdefines(filecfg.defines), toolset.getundefines(filecfg.undefines)))
-		local includes = tostring(toolset.getincludedirs(cfg, filecfg.includedirs, filecfg.externalincludedirs))
+		local includes = tostring(toolset.getincludedirs(cfg, filecfg.includedirs, filecfg.externalincludedirs, filecfg.frameworkdirs, filecfg.includedirsafter))
 		local forceincludes = tostring(toolset.getforceincludes(cfg))
 		return buildopt .. cppflags .. cxxflags .. defines .. includes .. forceincludes
 	end
