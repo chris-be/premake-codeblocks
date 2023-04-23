@@ -59,11 +59,12 @@
 		_p('<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>')
 		_p('<CodeBlocks_project_file>')
 		_p(1,'<FileVersion major="1" minor="6" />')
-		
+
 		-- write project block header
 		_p(1,'<Project>')
 		_p(2,'<Option title="%s" />', prj.name)
 		_p(2,'<Option pch_mode="2" />')
+		_p(2,'<Option compiler="%s" />', m.getcompilername(prj))
 	end
 
 	function m.footer(prj)
@@ -156,7 +157,7 @@
 				end
 				_p(4,'</Compiler>')
 				-- end compiler block --
-				
+
 				-- begin linker block --
 				_p(4,'<Linker>')
 				for _,flag in ipairs(table.join(compiler.getldflags(cfg), cfg.linkoptions)) do
@@ -170,7 +171,7 @@
 				end
 				_p(4,'</Linker>')
 				-- end linker block --
-				
+
 				-- begin resource compiler block --
 				if config.findfile(cfg, ".rc") then
 					_p(4,'<ResourceCompiler>')
