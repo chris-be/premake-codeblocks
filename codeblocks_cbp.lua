@@ -17,6 +17,16 @@
 
 	local m = codeblocks.project
 
+	-- weights for generated files
+	-- lower weight means build first (default is 50)
+	m.weights = {
+		[".h"] = 35, -- generated header files are built before others generated source files
+		[".hh"] = 35,
+		[".hpp"] = 35,
+		[".hxx"] = 35,
+		_ = 40 -- fallback
+	}
+
 	m.elements = {}
 
 	m.ctools =
@@ -249,7 +259,11 @@
 						compile = "$compiler $options $includes -c " .. project.getrelative(cfg.project, filecfg.buildoutputs[1]) .. " -o $object"
 						_p(3, '<Option link="1" />')
 					end
-					_p(3, '<Option weight="40" />') -- below default 50 to ensure genrated files are built befoe regulr ones
+					local ext = ""
+					if #filecfg.buildoutputs ~= 0 then
+						ext = path.getextension(filecfg.buildoutputs[1]):lower()
+					end
+					_p(3, '<Option weight="%d" />', m.weights[ext] or m.weights["_"])
 					_p(3, '<Option compiler="%s" use="1" buildCommand="%s" />', m.getcompilername(cfg), p.esc(os.translateCommandsAndPaths(buildmessage .. commands .. compile, cfg.project.basedir, cfg.project.location):gsub('\n', '\\n')))
 					return true
 				end
