@@ -186,7 +186,7 @@
 				-- end resource compiler block --
 
 				-- begin build steps --
-				if #cfg.prebuildcommands > 0 or #cfg.postbuildcommands > 0 then
+				if cfg.prebuildmessage or cfg.prelinkmessage or cfg.postbuildmessage or #cfg.prebuildcommands > 0 or #cfg.prelinkcommands or #cfg.postbuildcommands > 0 then
 					_p(4,'<ExtraCommands>')
 					if cfg.prebuildmessage then
 						_p(5,'<Add before="%s" />', p.esc(os.translateCommandsAndPaths("{ECHO} ".. cfg.prebuildmessage, cfg.project.basedir, cfg.project.location)))
@@ -194,13 +194,23 @@
 					for _,v in ipairs(cfg.prebuildcommands) do
 						_p(5,'<Add before="%s" />', p.esc(os.translateCommandsAndPaths(v, cfg.project.basedir, cfg.project.location)))
 					end
+
+					if cfg.prelinkmessage then
+						_p(5,'<Add before="%s" />', p.esc(os.translateCommandsAndPaths("{ECHO} ".. cfg.prelinkmessage, cfg.project.basedir, cfg.project.location)))
+					end
+					if #cfg.prelinkcommands > 0 then
+						p.warnOnce("codeblocks_prelink", "prelinkcommands is treated as prebuildcommands for Code::Blocks")
+						for _,v in ipairs(cfg.prelinkcommands) do
+							_p(5,'<Add before="%s" />', p.esc(os.translateCommandsAndPaths(v, cfg.project.basedir, cfg.project.location)))
+						end
+					end
+
 					if cfg.postbuildmessage then
 						_p(5,'<Add after="%s" />', p.esc(os.translateCommandsAndPaths("{ECHO} ".. cfg.postbuildmessage,  cfg.project.basedir, cfg.project.location)))
 					end
 					for _,v in ipairs(cfg.postbuildcommands) do
 						_p(5,'<Add after="%s" />', p.esc(os.translateCommandsAndPaths(v, cfg.project.basedir, cfg.project.location)))
 					end
-
 					_p(4,'</ExtraCommands>')
 				end
 				-- end build steps --
