@@ -393,6 +393,9 @@
 				local hasFileSettings = p.fileconfig.hasFileSettings(p.fileconfig.getconfig(node, cfg))
 				if path.isresourcefile(node.name) then
 					_p(3,'<Option compilerVar="WINDRES" />')
+				elseif filecfg.flags.ExcludeFromBuild then
+					_p(3, '<Option compile="0" />')
+					_p(3, '<Option link="0" />')
 				elseif (node.compileas and node.compileas ~= "Default") or hasFileSettings then
 					local toolset = p.tools[_OPTIONS.cc or cfg.toolset or p.GCC]
 					local default_compiler = m.getcompilername(cfg)
