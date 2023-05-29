@@ -139,7 +139,7 @@
 
 				-- begin compiler block --
 				_p(4,'<Compiler>')
-				for _,flag in ipairs(table.join(compiler.getcflags(cfg), compiler.getcxxflags(cfg), compiler.getdefines(cfg.defines), cfg.buildoptions)) do
+				for _,flag in ipairs(table.join(compiler.getcflags(cfg), compiler.getcxxflags(cfg), compiler.getdefines(cfg.defines), compiler.getundefines(cfg.undefines), cfg.buildoptions)) do
 					_p(5,'<Add option="%s" />', p.esc(flag))
 				end
 				if not cfg.flags.NoPCH and cfg.pchheader then
