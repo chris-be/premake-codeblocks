@@ -23,6 +23,22 @@
 			cc	= { "clang", "gcc", "msc" },
 		},
 
+		pathVars        = {
+			["wks.location"]             = { absolute = true,  token = "$(WORKSPACE_DIR)" },
+			["wks.name"]                 = { absolute = false, token = "$(WORKSPACE_NAME)" },
+			["sln.location"]             = { absolute = true,  token = "$(WORKSPACE_DIR)" },
+			["sln.name"]                 = { absolute = false, token = "$(WORKSPACE_NAME)" },
+			["prj.location"]             = { absolute = true,  token = "$(PROJECT_DIR)" },
+			["prj.name"]                 = { absolute = false, token = "$(PROJECT_NAME)" },
+			["cfg.targetdir"]            = { absolute = true,  token = "$(PROJECT_DIR)$(TARGET_OUTPUT_DIR)" },
+			["cfg.buildcfg"]             = { absolute = false, token = "$(TARGET_NAME)" },
+			["cfg.buildtarget.basename"] = { absolute = false, token = "$(TARGET_OUTPUT_BASENAME)" },
+			["cfg.buildtarget.relpath"]  = { absolute = false, token = "$(TARGET_OUTPUT_FILE)" },
+			["file.directory"]           = { absolute = true,  token = "$file_dir" },
+			["file.basename"]            = { absolute = false, token = "$file_name" },
+			["file.abspath"]             = { absolute = true,  token = "$file" },
+		},
+
 		onWorkspace = function(wks)
 			p.modules.codeblocks.generateWorkspace(wks)
 		end,
