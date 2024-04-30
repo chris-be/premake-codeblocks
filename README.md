@@ -1,5 +1,5 @@
 # Premake-CodeBlocks Module
-"Premake" module that generates *workspace and projects* for [Code::Blocks](http://www.codeblocks.org/).
+"Premake" module that generates *workspace and projects* for [Code::Blocks](http://www.codeblocks.org/).<br>
 **Based on source code from** [Premake4](https://github.com/premake/premake-4.x/tree/master/src/actions/codeblocks).
 
 ## Features
@@ -13,13 +13,17 @@
 require "codeblocks"
 ```
 
-3. Generate
+3. Generate Code::Blocks files
+The module checks if configurations are compatible with Code::Blocks, but it slows down the process. It can be disabled with option `--codeblocks-check=false`
+
 ```sh
 premake5 codeblocks
+# Or
+premake5 codeblocks --codeblocks=false
 ```
 
 # Note
-If you are interested in a "Code::Blocks" plugin to do the reverse job, you may try [*Premake5 exporter*](https://gitlab.com/arnholm/premake5cb).
+If you are interested in a Code::Blocks plugin doing the reverse job, you may try [*Premake5 exporter*](https://gitlab.com/arnholm/premake5cb).
 
 ## Tested on
 <table>

@@ -1,16 +1,12 @@
 --
 -- Name:		codeblocks/_preload.lua
--- Purpose:		Define Code::Blocks action.
--- Author:		
--- Modified by:	Christophe Marc BERTONCINI
--- Created:		
--- Copyright:	(c) 2002-2018 Jason Perkins and the Premake project
+-- Purpose:		Define Code::Blocks action (and its options).
+-- Copyright:	See attached license file
 --
 
 	local p = premake
 
-	newaction
-	{
+	newaction {
 		trigger         = "codeblocks",
 		shortname       = "Code::Blocks",
 		description     = "Generate Code::Blocks project files",
@@ -18,8 +14,7 @@
 
 		valid_kinds     = { "ConsoleApp", "WindowedApp", "StaticLib", "SharedLib" },
 		valid_languages = { "C", "C++" },
-		valid_tools     =
-		{
+		valid_tools     = {
 			cc	= { "clang", "gcc", "msc" },
 		},
 
@@ -58,6 +53,16 @@
 		onCleanTarget = function(tgt)
 			p.modules.codeblocks.cleanTarget(tgt)
 		end
+	}
+
+	newoption {
+		trigger = "codeblocks-check",
+		value = "ENABLE",
+		description = "codeblocks: check configuration consistency",
+		allowed = {
+			{ "true", "Enabled (*)" }, { "false", "Disabled" }
+		},
+		default = "true"
 	}
 
 	-- Decide when the full module should be loaded.

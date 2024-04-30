@@ -1,26 +1,20 @@
 --
 -- Name:		codeblocks/codeblocks_workspace.lua
 -- Purpose:		Generate a Code::Blocks workspace.
--- Author:		Ryan Pusztai
--- Modified by:	Andrea Zanellato
---				Manu Evans
--- Created:		2013/05/06
--- Copyright:	(c) 2008-2018 Jason Perkins and the Premake project
+-- Copyright:	See attached license file
 --
 
+	-- Premake libraries
 	local p = premake
-
-	local codeblocks = p.modules.codeblocks
-
 	local project = p.project
 	local workspace = p.workspace
-	local tree = p.tree
+	-- local tree = p.tree
 
+	-- CodeBlocks "workspace" library
+	local codeblocks = p.modules.codeblocks
 	local m = codeblocks.workspace
 
---
--- Generate a CodeBlocks workspace
---
+	-- Generate a CodeBlocks workspace
 	function m.generate(wks)
 		p.utf8()
 

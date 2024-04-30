@@ -1,22 +1,20 @@
 --
 -- Name:		codeblocks/codeblocks.lua
--- Purpose:		Generate a Code::Blocks workspace.
--- Author:		
--- Modified by:	
--- Created:		
--- Copyright:	(c) 2009-2018 Jason Perkins and the Premake project
+-- Purpose:		Generate a Code::Blocks workspace and projects.
+-- Copyright:	See attached license file
 --
 
+	-- Premake libraries
 	local p = premake
+	local project = p.project
 
+	-- CodeBlocks library
 	p.modules.codeblocks = {}
-	p.modules.codeblocks._VERSION = "1.0.0-dev"
+	p.modules.codeblocks._VERSION = "1.0.1-dev"
 
 	local codeblocks = p.modules.codeblocks
 	codeblocks.workspace = {}
-
-	local project = p.project
-	codeblocks.project = {}
+	codeblocks.project   = {}
 
 	function codeblocks.cfgname(cfg)
 		local cfgname = cfg.buildcfg
@@ -65,8 +63,11 @@
 		-- TODO
 	end
 
+	-- Loads libraries
+	include("codeblocks_main.lua")
 	include("codeblocks_workspace.lua")
 	include("codeblocks_cbp.lua")
+	include("codeblocks_auditor.lua")
 
 	-- Way to go if not embedded ?
 	include("_preload.lua")
