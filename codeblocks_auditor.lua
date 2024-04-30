@@ -72,7 +72,7 @@
 				local tmp1 = main.listCFlags(toolset1, cfg1, filecfg1)
 				local tmp2 = main.listCFlags(toolset2, cfg2, filecfg2)
 				if not compareTableList(tmp1, tmp2, table.equals) then return "cflags" end
-			elseif main.shouldCompileAsCxx(cfg1, node) then
+			elseif main.shouldCompileAsCpp(cfg1, node) then
 				local tmp1 = main.listCxxFlags(toolset1, cfg1, filecfg1)
 				local tmp2 = main.listCxxFlags(toolset2, cfg2, filecfg2)
 				if not compareTableList(tmp1, tmp2, table.equals) then return "cxxflags" end
