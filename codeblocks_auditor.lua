@@ -119,7 +119,7 @@
 			local err_field = checkCfgs(first_cfg, cfg)
 			if err_field then
 				p.warnOnce(main.WARN_KEY_AUDITOR, "Code::Blocks doesn't support custom build different by configuration. You might try using Token (i.e '%%%%{cfg.buildcfg}') to bypass that issue.")
-				p.warn("Not consistent config (%s) for file %s. Keeping config ", err_field, node.name, first_cfg.name)
+				p.warn("Not consistent config (%s) for file %s. Keeping config %s", err_field, node.name, first_cfg.name)
 				return
 			end
 		end -- while
