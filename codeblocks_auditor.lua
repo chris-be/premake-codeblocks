@@ -20,13 +20,13 @@
 	local function compareTableList(list1, list2, comparator)
 		if #list1 ~= #list2 then return false end
 		local i1, v1 = next(list1, nil)
-		local _, v2 = next(list2, nil)
+		local i2, v2 = next(list2, nil)
 		while i1 ~= nil do
 			if not comparator(v1, v2) then
 				return false
 			end
-			i1, v1 = next(list1, nil)
-			_, v2 = next(list2, nil)
+			i1, v1 = next(list1, i1)
+			i2, v2 = next(list2, i2)
 		end
 		return true
 	end
