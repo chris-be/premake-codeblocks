@@ -256,10 +256,12 @@
 				local filecfg = p.fileconfig.getconfig(node, cfg)
 				if path.isresourcefile(node.name) then
 					_p(3,'<Option compilerVar="WINDRES" />')
+				elseif filecfg.flags.ExcludeFromBuild then
+					_p(3, '<Option compile="0" />')
+					_p(3, '<Option link="0" />')
 				elseif (node.compileas and node.compileas ~= "Default") or p.fileconfig.hasFileSettings(filecfg) then
 					local toolset = main.getCompiler(cfg)
-					local default_compiler = main.getiCompilerName(cfg)
-
+					local default_compiler = main.getCompilerName(cfg)
 					if main.shouldCompileAsC(cfg, node) then
 						_p(3,'<Option compilerVar="CC" />')
 						_p(3,'<Option compile="1" />')
