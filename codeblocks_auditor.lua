@@ -31,28 +31,6 @@
 		return true
 	end
 
-	-- List tables to compare for c flags
-	local function listCompareCFlags(toolset, cfg, filecfg)
-		return {
-			filecfg.buildoptions,
-			toolset.getcppflags(filecfg), toolset.getcflags(filecfg),
-			toolset.getdefines(filecfg.defines), toolset.getundefines(filecfg.undefines),
-			toolset.getincludedirs(cfg, filecfg.includedirs, filecfg.externalincludedirs),
-			toolset.getforceincludes(cfg)
-		};
-	end
-
-	-- List tables to compare for cxx flags
-	local function listCompareCxxFlags(toolset, cfg, filecfg)
-		return {
-			filecfg.buildoptions,
-			toolset.getcppflags(filecfg), toolset.getcxxflags(filecfg),
-			toolset.getdefines(filecfg.defines), toolset.getundefines(filecfg.undefines),
-			toolset.getincludedirs(cfg, filecfg.includedirs, filecfg.externalincludedirs),
-			toolset.getforceincludes(cfg)
-		};
-	end
-
 	local function warnIfNotConsistentConfigs(prj, node)
 
 		local function checkFilecfgs(filecfg1, filecfg2)
@@ -91,12 +69,12 @@
 			if not hasFileSettings1 then return nil end
 
 			if main.shouldCompileAsC(cfg1, node) then
-				local tmp1 = listCompareCFlags(toolset1, cfg1, filecfg1)
-				local tmp2 = listCompareCFlags(toolset2, cfg2, filecfg2)
+				local tmp1 = main.listCFlags(toolset1, cfg1, filecfg1)
+				local tmp2 = main.listCFlags(toolset2, cfg2, filecfg2)
 				if not compareTableList(tmp1, tmp2, table.equals) then return "cflags" end
 			elseif main.shouldCompileAsCxx(cfg1, node) then
-				local tmp1 = listCompareCxxFlags(toolset1, cfg1, filecfg1)
-				local tmp2 = listCompareCxxFlags(toolset2, cfg2, filecfg2)
+				local tmp1 = main.listCxxFlags(toolset1, cfg1, filecfg1)
+				local tmp2 = main.listCxxFlags(toolset2, cfg2, filecfg2)
 				if not compareTableList(tmp1, tmp2, table.equals) then return "cxxflags" end
 			end
 

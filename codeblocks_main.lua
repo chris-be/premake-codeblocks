@@ -18,6 +18,27 @@
 	m.AUDITOR_TITLE    = "codeblocks_auditor"
 	m.WARN_KEY_AUDITOR = "codeblocks_check_configs"
 
+	-- Initialized on first need
+	local auditorEnabled = nil
+
+	-- Check "codeblocks-check" option
+	m.isAuditorEnabled = function()
+		if auditorEnabled == nil then
+			-- newoption handles default value (no need to add test 'or "true"')
+			auditorEnabled = (_OPTIONS["codeblocks-check"]) == "true"
+
+			local msg
+			if auditorEnabled then
+				msg = "enabled"
+			else
+				msg = "disabled"
+			end
+			verbosef(m.AUDITOR_TITLE .. ": %s", msg)
+		end
+
+		return auditorEnabled
+	end
+
 -- Toolset
 -- -------
 	m.Tools = {
@@ -63,33 +84,29 @@
 
 -- Compile flags
 -- -------------
-	local function tostring(value)
-		if #value > 0 then
-			return " " .. table.concat(value, " ")
-		else
-			return ""
-		end
+
+	-- List tables used for generating c flags
+	function m.listCFlags(toolset, cfg, filecfg)
+		-- Keep order ! buildopt .. cppflags .. cflags .. defines .. includes .. forceincludes
+		return {
+			filecfg.buildoptions,
+			toolset.getcppflags(filecfg), toolset.getcflags(filecfg),
+			toolset.getdefines(filecfg.defines), toolset.getundefines(filecfg.undefines),
+			toolset.getincludedirs(cfg, filecfg.includedirs, filecfg.externalincludedirs, filecfg.frameworkdirs, filecfg.includedirsafter),
+			toolset.getforceincludes(cfg)
+		};
 	end
 
-	function m.getCFlags(toolset, cfg, filecfg)
-		local buildopt = tostring(filecfg.buildoptions)
-		local cppflags = tostring(toolset.getcppflags(filecfg))
-		local cflags = tostring(toolset.getcflags(filecfg))
-		local defines = tostring(table.join(toolset.getdefines(filecfg.defines), toolset.getundefines(filecfg.undefines)))
-		local includes = tostring(toolset.getincludedirs(cfg, filecfg.includedirs, filecfg.externalincludedirs))
-		local forceincludes = tostring(toolset.getforceincludes(cfg))
-
-		return buildopt .. cppflags .. cflags .. defines .. includes .. forceincludes
-	end
-
-	function m.getCppFlags(toolset, cfg, filecfg)
-		local buildopt = tostring(filecfg.buildoptions)
-		local cppflags = tostring(toolset.getcppflags(filecfg))
-		local cxxflags = tostring(toolset.getcxxflags(filecfg))
-		local defines = tostring(table.join(toolset.getdefines(filecfg.defines), toolset.getundefines(filecfg.undefines)))
-		local includes = tostring(toolset.getincludedirs(cfg, filecfg.includedirs, filecfg.externalincludedirs))
-		local forceincludes = tostring(toolset.getforceincludes(cfg))
-		return buildopt .. cppflags .. cxxflags .. defines .. includes .. forceincludes
+	-- List tables used for generating cxx flags
+	function m.listCxxFlags(toolset, cfg, filecfg)
+		-- Keep order ! buildopt .. cppflags .. cxxflags .. defines .. includes .. forceincludes
+		return {
+			filecfg.buildoptions,
+			toolset.getcppflags(filecfg), toolset.getcxxflags(filecfg),
+			toolset.getdefines(filecfg.defines), toolset.getundefines(filecfg.undefines),
+			toolset.getincludedirs(cfg, filecfg.includedirs, filecfg.externalincludedirs, filecfg.frameworkdirs, filecfg.includedirsafter),
+			toolset.getforceincludes(cfg)
+		};
 	end
 
 	-- Find compileas from cfg and node
@@ -124,25 +141,4 @@
 		end
 		-- Use file
 		return path.iscppfile(node.abspath)
-	end
-
-	-- Initialized on first need
-	local auditorEnabled = nil
-
-	-- Check "codeblocks-check" option
-	m.isAuditorEnabled = function()
-		if auditorEnabled == nil then
-			-- newoption handles default value (no need to add test 'or "true"')
-			auditorEnabled = (_OPTIONS["codeblocks-check"]) == "true"
-
-			local msg
-			if auditorEnabled then
-				msg = "enabled"
-			else
-				msg = "disabled"
-			end
-			verbosef(m.AUDITOR_TITLE .. ": %s", msg)
-		end
-
-		return auditorEnabled
 	end

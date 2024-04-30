@@ -27,6 +27,29 @@
 
 	m.elements = {}
 
+	-- Concat everything through tables
+	local function tablesToString(tableList)
+		local s = ""
+		for _, tbl in pairs(tableList) do
+			if #tbl > 0 then
+				s = s .. " " .. tbl.concat(tbl, " ")
+			end
+		end
+		return s
+	end
+
+	-- Generate c flags
+	function m.getCFlags(toolset, cfg, filecfg)
+		local tblList = main.listCFlags(toolset, cfg, filecfg)
+		return tablesToString(tblList)
+	end
+
+	-- Generate cpp flags
+	function m.getCppFlags(toolset, cfg, filecfg)
+		local tblList = main.listCxxFlags(toolset, cfg, filecfg)
+		return tablesToString(tblList)
+	end
+
 -- Files generation
 -- ----------------
 	m.elements.project = function(prj)
@@ -128,7 +151,7 @@
 				for _, forceincludedir in ipairs(compiler.getforceincludes(cfg)) do
 					_p(5,'<Add option="%s" />', forceincludedir)
 				end
-				for _, externalincludedirs in ipairs(compiler.getincludedirs(cfg, {}, cfg.externalincludedirs)) do
+				for _, externalincludedirs in ipairs(compiler.getincludedirs(cfg, {}, cfg.externalincludedirs, cfg.frameworkdirs, cfg.includedirsafter)) do
 					_p(5,'<Add option="%s" />', externalincludedirs)
 				end
 				for _,v in ipairs(cfg.includedirs) do
@@ -241,12 +264,12 @@
 						_p(3,'<Option compilerVar="CC" />')
 						_p(3,'<Option compile="1" />')
 						_p(3,'<Option link="1" />')
-						_p(3,'<Option compiler="%s" use="1" buildCommand="$compiler $options $includes %s -c -x c $file -o $object" />', default_compiler, main.getCFlags(toolset, cfg, filecfg))
+						_p(3,'<Option compiler="%s" use="1" buildCommand="$compiler $options $includes %s -c -x c $file -o $object" />', default_compiler, m.getCFlags(toolset, cfg, filecfg))
 					elseif main.shouldCompileAsCpp(cfg, node) then
 						_p(3,'<Option compilerVar="CPP" />')
 						_p(3,'<Option compile="1" />')
 						_p(3,'<Option link="1" />')
-						_p(3,'<Option compiler="%s" use="1" buildCommand="$compiler $options $includes %s -c -x c++ $file -o $object" />', default_compiler, main.getCppFlags(toolset, cfg, filecfg))
+						_p(3,'<Option compiler="%s" use="1" buildCommand="$compiler $options $includes %s -c -x c++ $file -o $object" />', default_compiler, m.getCppFlags(toolset, cfg, filecfg))
 					end
 				elseif path.iscfile(node.name) and prj.language == "C++" then
 					_p(3,'<Option compilerVar="CC" />')
