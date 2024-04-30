@@ -10,11 +10,11 @@
 	-- local config = p.config
 	local tree = p.tree
 
+	-- Load needed libraries (must be done here)
+	local main = require("codeblocks_main")
+
 	-- CodeBlocks "auditor" library
-	local codeblocks = p.modules.codeblocks
-	local main = codeblocks.main
-	codeblocks.auditor = {}
-	local m = codeblocks.auditor
+	local M = {}
 
 	-- Compare table lists side by side
 	local function compareTableList(list1, list2, comparator)
@@ -127,7 +127,7 @@
 
 	-- Check configurations for all files of project
 	---@param prj _ Checked project
-	function m.checkFiles(prj)
+	function M.checkFiles(prj)
 		verbosef("%s: check project '%s'", main.AUDITOR_TITLE, prj.name)
 		local checkedNodeNb = 0
 		local clockStart = os.clock()
@@ -155,3 +155,5 @@
 		end
 		verbosef("%s: check done, took %.2fs for %i files%s", main.AUDITOR_TITLE, elapsed, checkedNodeNb, avg)
 	end
+
+return M

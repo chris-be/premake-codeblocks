@@ -10,7 +10,7 @@
 	local workspace = p.workspace
 	-- local tree = p.tree
 
-	-- CodeBlocks "workspace" library
+	-- CodeBlocks "workspace" code
 	local codeblocks = p.modules.codeblocks
 	local m = codeblocks.workspace
 

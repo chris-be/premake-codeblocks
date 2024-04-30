@@ -10,9 +10,12 @@
 	local config = p.config
 	local tree = p.tree
 
-	-- CodeBlocks "project" library
+	-- Load needed libraries (must be done here)
+	local main = require("codeblocks_main")
+	local auditor = require("codeblocks_auditor")
+
+	-- CodeBlocks "project" code
 	local codeblocks = p.modules.codeblocks
-	local main = codeblocks.main
 	local m = codeblocks.project
 
 	-- weights for generated files
@@ -64,14 +67,13 @@
 
 	-- Generate the CodeBlocks project file.
 	function m.generate(prj)
-		p.utf8()
-
 		if  main.isAuditorEnabled() then
 			-- Audit files before generating
-			codeblocks.auditor.checkFiles(prj)
+			auditor.checkFiles(prj)
 		end
 
 		-- Generation
+		p.utf8()
 		p.callArray(m.elements.project, prj)
 	end
 

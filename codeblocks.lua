@@ -63,11 +63,9 @@
 		-- TODO
 	end
 
-	-- Loads libraries
-	include("codeblocks_main.lua")
+	-- Load code
 	include("codeblocks_workspace.lua")
 	include("codeblocks_cbp.lua")
-	include("codeblocks_auditor.lua")
 
 	-- Way to go if not embedded ?
 	include("_preload.lua")

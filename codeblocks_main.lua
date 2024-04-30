@@ -9,20 +9,18 @@
 	local tools = p.tools
 
 	-- CodeBlocks "main" library
-	local codeblocks = p.modules.codeblocks
-	codeblocks.main = {}
-	local m = codeblocks.main
+	local M = {}
 
 -- Defines
 -- -------
-	m.AUDITOR_TITLE    = "codeblocks_auditor"
-	m.WARN_KEY_AUDITOR = "codeblocks_check_configs"
+	M.AUDITOR_TITLE    = "codeblocks_auditor"
+	M.WARN_KEY_AUDITOR = "codeblocks_check_configs"
 
 	-- Initialized on first need
 	local auditorEnabled = nil
 
 	-- Check "codeblocks-check" option
-	m.isAuditorEnabled = function()
+	M.isAuditorEnabled = function()
 		if auditorEnabled == nil then
 			-- newoption handles default value (no need to add test 'or "true"')
 			auditorEnabled = (_OPTIONS["codeblocks-check"]) == "true"
@@ -33,7 +31,7 @@
 			else
 				msg = "disabled"
 			end
-			verbosef(m.AUDITOR_TITLE .. ": %s", msg)
+			verbosef(M.AUDITOR_TITLE .. ": %s", msg)
 		end
 
 		return auditorEnabled
@@ -41,7 +39,7 @@
 
 -- Toolset
 -- -------
-	m.Tools = {
+	M.Tools = {
 		-- Note: Code::Blocks does not distinguish c compiler from cpp compiler
 		CB_TOOL_NAMES = {
 			[tools.clang] = "clang",
@@ -51,7 +49,7 @@
 
 		-- Get compiler for toolset and language
 		getCompilerName = function(toolset, language)
-			local self = m.Tools
+			local self = M.Tools
 			if p.languages.isc(language) or p.languages.iscpp(language) then
 				return self.CB_TOOL_NAMES[toolset]
 			else
@@ -62,7 +60,7 @@
 
 	-- Get toolset name from config
 	-- Priority: _OPTIONS, cfg then default: gcc
-	function m.getToolsetFromCfg(cfg)
+	function M.getToolsetFromCfg(cfg)
 		local toolset_name = _OPTIONS.cc or cfg.toolset or p.GCC
 		local toolset, _ = tools.canonical(toolset_name)
 		if not toolset then
@@ -72,21 +70,21 @@
 	end
 
 	-- Get compiler name to use in Code::Blocks depending on toolset
-	function m.getCompilerName(cfg)
-		local toolset = m.getToolsetFromCfg(cfg)
-		return m.Tools.getCompilerName(toolset, cfg.language)
+	function M.getCompilerName(cfg)
+		local toolset = M.getToolsetFromCfg(cfg)
+		return M.Tools.getCompilerName(toolset, cfg.language)
 	end
 
 	-- Find out p.tools[]
-	function m.getCompiler(cfg)
-		return m.getToolsetFromCfg(cfg)
+	function M.getCompiler(cfg)
+		return M.getToolsetFromCfg(cfg)
 	end
 
 -- Compile flags
 -- -------------
 
 	-- List tables used for generating c flags
-	function m.listCFlags(toolset, cfg, filecfg)
+	function M.listCFlags(toolset, cfg, filecfg)
 		-- Keep order ! buildopt .. cppflags .. cflags .. defines .. includes .. forceincludes
 		return {
 			filecfg.buildoptions,
@@ -98,7 +96,7 @@
 	end
 
 	-- List tables used for generating cxx flags
-	function m.listCxxFlags(toolset, cfg, filecfg)
+	function M.listCxxFlags(toolset, cfg, filecfg)
 		-- Keep order ! buildopt .. cppflags .. cxxflags .. defines .. includes .. forceincludes
 		return {
 			filecfg.buildoptions,
@@ -125,7 +123,7 @@
 		return false, nil
 	end
 
-	function m.shouldCompileAsC(cfg, node)
+	function M.shouldCompileAsC(cfg, node)
 		local found, compileas = getCompileAs(cfg, node)
 		if found == true then
 			return p.languages.isc(compileas)
@@ -134,7 +132,7 @@
 		return path.iscfile(node.abspath)
 	end
 
-	function m.shouldCompileAsCpp(cfg, node)
+	function M.shouldCompileAsCpp(cfg, node)
 		local found, compileas = getCompileAs(cfg, node)
 		if found == true then
 			return p.languages.iscpp(compileas)
@@ -142,3 +140,5 @@
 		-- Use file
 		return path.iscppfile(node.abspath)
 	end
+
+return M
