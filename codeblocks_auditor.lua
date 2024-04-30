@@ -34,6 +34,12 @@
 	local function warnIfNotConsistentConfigs(prj, node)
 
 		local function checkFilecfgs(filecfg1, filecfg2)
+			if filecfg1.buildaction ~= filecfg2.buildaction then
+				return false, "buildaction"
+			end
+			if filecfg1.flags.ExcludeFromBuild ~= filecfg2.flags.ExcludeFromBuild then
+				return false, 'flags {"ExcludeFromBuild"}'
+			end
 			if filecfg1.buildmessage ~= filecfg2.buildmessage then
 				return false, "buildmessage"
 			end

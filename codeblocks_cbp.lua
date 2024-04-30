@@ -258,7 +258,7 @@
 				local filecfg = p.fileconfig.getconfig(node, cfg)
 				if path.isresourcefile(node.name) then
 					_p(3,'<Option compilerVar="WINDRES" />')
-				elseif filecfg.flags.ExcludeFromBuild then
+				elseif filecfg.flags.ExcludeFromBuild or filecfg.buildaction == "None" then
 					_p(3, '<Option compile="0" />')
 					_p(3, '<Option link="0" />')
 				elseif (node.compileas and node.compileas ~= "Default") or p.fileconfig.hasFileSettings(filecfg) then
