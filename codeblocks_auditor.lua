@@ -20,13 +20,13 @@
 	local function compareTableList(list1, list2, comparator)
 		if #list1 ~= #list2 then return false end
 		local i1, v1 = next(list1, nil)
-		local _, v2 = next(list2, nil)
+		local i2, v2 = next(list2, nil)
 		while i1 ~= nil do
 			if not comparator(v1, v2) then
 				return false
 			end
-			i1, v1 = next(list1, nil)
-			_, v2 = next(list2, nil)
+			i1, v1 = next(list1, i1)
+			i2, v2 = next(list2, i2)
 		end
 		return true
 	end
@@ -72,7 +72,7 @@
 				local tmp1 = main.listCFlags(toolset1, cfg1, filecfg1)
 				local tmp2 = main.listCFlags(toolset2, cfg2, filecfg2)
 				if not compareTableList(tmp1, tmp2, table.equals) then return "cflags" end
-			elseif main.shouldCompileAsCxx(cfg1, node) then
+			elseif main.shouldCompileAsCpp(cfg1, node) then
 				local tmp1 = main.listCxxFlags(toolset1, cfg1, filecfg1)
 				local tmp2 = main.listCxxFlags(toolset2, cfg2, filecfg2)
 				if not compareTableList(tmp1, tmp2, table.equals) then return "cxxflags" end
@@ -118,8 +118,8 @@
 
 			local err_field = checkCfgs(first_cfg, cfg)
 			if err_field then
-				p.warnOnce(main.KEY_WARN_AUDITOR, "Code::Blocks doesn't support custom build different by configuration. You might try using Token (i.e '%%%%{cfg.buildcfg}') to bypass that issue.")
-				p.warn("Not consistent config (%s) for file %s. Keeping config ", err_field, node.name, first_cfg.name)
+				p.warnOnce(main.WARN_KEY_AUDITOR, "Code::Blocks doesn't support custom build different by configuration. You might try using Token (i.e '%%%%{cfg.buildcfg}') to bypass that issue.")
+				p.warn("Not consistent config (%s) for file %s. Keeping config %s", err_field, node.name, first_cfg.name)
 				return
 			end
 		end -- while
