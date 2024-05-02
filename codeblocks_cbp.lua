@@ -35,7 +35,7 @@
 		local s = ""
 		for _, tbl in pairs(tableList) do
 			if #tbl > 0 then
-				s = s .. " " .. tbl.concat(tbl, " ")
+				s = s .. " " .. table.concat(tbl, " ")
 			end
 		end
 		return s
