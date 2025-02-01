@@ -167,7 +167,7 @@
 				for _,v in ipairs(config.getlinks(cfg, "all", "directory")) do
 					_p(5,'<Add directory="%s" />', p.esc(v))
 				end
-				if cfg.linkgroups and compiler ~= p.tools.msc then
+				if cfg.linkgroups == p.ON and compiler ~= p.tools.msc then
 					_p(5,'<Add option="-Wl,--start-group" />')
 						for _,flag in ipairs(table.join(compiler.getldflags(cfg), cfg.linkoptions, compiler.getlinks(cfg))) do
 							_p(5,'<Add option="%s" />', p.esc(flag))
