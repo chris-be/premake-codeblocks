@@ -5,6 +5,7 @@
 --
 
 	-- Premake libraries
+	---@module 'premake5'
 	local p = premake
 	local project = p.project
 	-- local config = p.config

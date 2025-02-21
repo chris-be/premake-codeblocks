@@ -1,7 +1,11 @@
-# OS generated files 
+# OS generated files
 ## Mac OS X
 .DS_Store
 .Trashes
 .Spotlight-V100
 # # Windows
 Thumbs.db
+
+#
+.luarc.json
+

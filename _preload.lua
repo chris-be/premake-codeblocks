@@ -3,7 +3,7 @@
 -- Purpose:		Define Code::Blocks action (and its options).
 -- Copyright:	See attached license file
 --
-
+	---@module 'premake5'
 	local p = premake
 
 	newaction {
