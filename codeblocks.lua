@@ -54,9 +54,9 @@
 	end
 
 	function codeblocks.cleanProject(prj)
-		p.clean.file(prj, prj.name .. ".workspace")
-		p.clean.file(prj, prj.name .. ".depend")
+		p.clean.file(prj, prj.name .. ".cbp")
 		p.clean.file(prj, prj.name .. ".layout")
+		p.clean.file(prj, prj.name .. ".depend")
 	end
 
 	function codeblocks.cleanTarget(tgt)
