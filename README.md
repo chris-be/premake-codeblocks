@@ -36,7 +36,7 @@ If your IDE understands [EmmyLua annotations](https://emmylua.github.io/annotati
 	<th>OS (Platform) - Date</th>	<th>Premake</th>	<th>Code::Blocks Version</th>	<th>Target compiler</th>
 </tr>
 <tr>
-	<td>Void Linux (x64) - April 2024</td>	<td>5.0.0-alpha15</td>	<td>20.03</td>	<td>clang, gcc</td>
+	<td>Alpine Linux (x64) - February 2025</td>	<td>5.0.0-beta3</td>	<td>20.03</td>	<td>clang, gcc</td>
 </tr>
 </table>
 
